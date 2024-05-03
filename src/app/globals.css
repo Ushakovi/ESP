@@ -1,8 +1,11 @@
 :root {
     --max-content-width: 1180px;
-    --main-color: #ddbea9;
-    --second-color: #b7b7a4;
-    --second-dark-color: #6b705c;
+    --main-color: #a5a58d;
+    --main-light-color: #b7b7a4;
+    --main-dark-color: #6b705c;
+    --second-color: #ddbea9;
+    --second-light-color: #ffe8d6;
+    --second-dark-color: #cb997e;
 }
 
 * {

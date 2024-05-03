@@ -6,10 +6,7 @@ export default async function Home() {
     return (
         <div>
             <p>Main page</p>
-            {rows.length > 0 &&
-                rows.map((user) => (
-                    <p key={user.id}>{`${user.name} by id: ${user.id}`}</p>
-                ))}
+            {rows.length > 0 && rows.map((user) => <p key={user.id}>{`${user.name} by id: ${user.id}`}</p>)}
         </div>
     );
 }

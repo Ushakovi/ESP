@@ -7,14 +7,7 @@ import { redirect } from 'next/navigation';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import MaterialLink from '@mui/material/Link';
-import {
-    Alert,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
-    SelectChangeEvent,
-} from '@mui/material';
+import { Alert, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { submitRegistration } from '@/utils/server/actions';
 import styles from './page.module.css';
 
@@ -58,13 +51,8 @@ export default function Page() {
                     sx={{
                         marginTop: '20px',
                     }}
-                    severity={
-                        alertShow.alertStatus === 'success'
-                            ? 'success'
-                            : 'error'
-                    }
-                    onClose={() => setAlertShow(null)}
-                >
+                    severity={alertShow.alertStatus === 'success' ? 'success' : 'error'}
+                    onClose={() => setAlertShow(null)}>
                     {alertShow.alertText}
                 </Alert>
             )}
@@ -79,21 +67,8 @@ export default function Page() {
                         type='email'
                         required
                     />
-                    <TextField
-                        name='fullname'
-                        label='ФИО'
-                        placeholder='ФИО'
-                        variant='outlined'
-                        type='text'
-                        required
-                    />
-                    <TextField
-                        name='phone'
-                        label='Телефон'
-                        placeholder='Телефон'
-                        variant='outlined'
-                        type='tel'
-                    />
+                    <TextField name='fullname' label='ФИО' placeholder='ФИО' variant='outlined' type='text' required />
+                    <TextField name='phone' label='Телефон' placeholder='Телефон' variant='outlined' type='tel' />
                     <TextField
                         name='password'
                         label='Пароль'
@@ -110,8 +85,7 @@ export default function Page() {
                             value={selectRole}
                             label='Роль'
                             required
-                            onChange={handleChange}
-                        >
+                            onChange={handleChange}>
                             {roles.map(({ id, role }) => (
                                 <MenuItem key={id} value={role}>
                                     {role}

@@ -38,13 +38,8 @@ export default function Page() {
                     sx={{
                         marginTop: '20px',
                     }}
-                    severity={
-                        alertShow.alertStatus === 'success'
-                            ? 'success'
-                            : 'error'
-                    }
-                    onClose={() => setAlertShow(null)}
-                >
+                    severity={alertShow.alertStatus === 'success' ? 'success' : 'error'}
+                    onClose={() => setAlertShow(null)}>
                     {alertShow.alertText}
                 </Alert>
             )}

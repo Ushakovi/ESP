@@ -35,12 +35,11 @@ export async function submitLogin(prevState: any, formData: FormData) {
                 status: 200,
                 statusText: 'Авторизация прошла успешно',
             };
-        } else {
-            return {
-                status: 400,
-                statusText: 'Неверный логин или пароль',
-            };
         }
+        return {
+            status: 400,
+            statusText: 'Неверный логин или пароль',
+        };
     }
 }
 
@@ -52,8 +51,7 @@ export async function submitRegistration(prevState: any, formData: FormData) {
     const role = String(formData.get('role'));
 
     const { rows: roles } = await sql`SELECT * FROM roles where role = ${role}`;
-    const { rows: users } =
-        await sql`SELECT * FROM users where email = ${email}`;
+    const { rows: users } = await sql`SELECT * FROM users where email = ${email}`;
 
     if (users.length > 0) {
         return {

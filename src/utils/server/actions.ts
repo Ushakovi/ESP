@@ -10,14 +10,14 @@ export async function submitLogin(prevState: any, formData: FormData) {
 
     if (email && password) {
         const { rows: users } =
-            await sql`SELECT us.id, us.email, us.fullname, us.phone, rs.id as roleId, rs.role, (password = crypt(${password}, password)) AS password_match
+            await sql`SELECT us.id, us.email, us.fullname, us.phone, rs.id as role_id, rs.role, (password = crypt(${password}, password)) AS password_match
             FROM users us
             join roles rs
-            on roleid = rs.id
+            on role_id = rs.id
             where email = ${email}`;
 
         if (users.length > 0 && users[0].password_match) {
-            const { id, email, fullname, phone, roleid, role } = users[0];
+            const { id, email, fullname, phone, role_id, role } = users[0];
 
             const token = jwt.sign(
                 {
@@ -25,7 +25,7 @@ export async function submitLogin(prevState: any, formData: FormData) {
                     email,
                     fullname,
                     phone,
-                    roleid,
+                    role_id,
                     role,
                     exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
                 },
@@ -74,18 +74,18 @@ export async function submitRegistration(prevState: any, formData: FormData) {
         try {
             const { rows: roles } = await sql`SELECT * FROM roles where role = ${role}`;
             if (roles.length > 0) {
-                await sql`INSERT INTO users (email, fullname, phone, password, roleid) VALUES (${email}, ${fullname}, ${phone}, crypt(${password}, gen_salt('md5')), ${roles[0].id});`;
+                await sql`INSERT INTO users (email, fullname, phone, password, role_id) VALUES (${email}, ${fullname}, ${phone}, crypt(${password}, gen_salt('md5')), ${roles[0].id});`;
             }
 
             const { rows: newUsers } =
-                await sql`SELECT us.id, us.email, us.fullname, us.phone, rs.id as roleId, rs.role, (password = crypt(${password}, password)) AS password_match
+                await sql`SELECT us.id, us.email, us.fullname, us.phone, rs.id as role_id, rs.role, (password = crypt(${password}, password)) AS password_match
             FROM users us
             join roles rs
-            on roleid = rs.id
+            on role_id = rs.id
             where email = ${email}`;
 
             if (newUsers.length > 0) {
-                const { id, email, fullname, phone, roleid, role } = newUsers[0];
+                const { id, email, fullname, phone, role_id, role } = newUsers[0];
 
                 const token = jwt.sign(
                     {
@@ -93,7 +93,7 @@ export async function submitRegistration(prevState: any, formData: FormData) {
                         email,
                         fullname,
                         phone,
-                        roleid,
+                        role_id,
                         role,
                         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
                     },

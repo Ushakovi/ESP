@@ -13,3 +13,19 @@
     align-items: center;
     gap: 20px;
 }
+
+.navbar__link {
+    color: #000000;
+}
+
+.navbar__avatarWrapper {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.navbar__avatar {
+    background-color: var(--main-dark-color);
+}

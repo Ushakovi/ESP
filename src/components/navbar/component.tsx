@@ -2,16 +2,17 @@
 
 import { useContext, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { Avatar, Box, Menu, MenuItem, Link as MaterialLink } from '@mui/material';
+import { useRouter, usePathname } from 'next/navigation';
+import { Avatar, Box, Menu, MenuItem, Link as MaterialLink, Typography } from '@mui/material';
 import { UserInfoContext } from '@/utils/client/userInfoProvider';
 import styles from './component.module.css';
 
-export default function Navbar() {
+export default function Component() {
     const userInfo: any = useContext(UserInfoContext);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const isOpen = Boolean(anchorEl);
     const router = useRouter();
+    const pathname = usePathname();
 
     const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -32,25 +33,27 @@ export default function Navbar() {
     return (
         <div className={styles.navbar}>
             <nav className={styles.navbar__menu}>
-                <Link href='/'>
-                    <MaterialLink component='button' fontWeight='700' sx={{ color: 'var(--main-dark-color)' }}>
-                        Дисциплины
-                    </MaterialLink>
-                </Link>
-                <Link href='/homeworks'>
-                    <MaterialLink component='button' fontWeight='700' sx={{ color: 'var(--main-dark-color)' }}>
-                        Домашняя работа
-                    </MaterialLink>
-                </Link>
+                {pathname === '/' ? (
+                    <Typography fontWeight='700'>Дисциплины</Typography>
+                ) : (
+                    <Link href='/'>
+                        <MaterialLink component='button' underline='hover' className={styles.navbar__link}>
+                            Дисциплины
+                        </MaterialLink>
+                    </Link>
+                )}
+                {pathname === '/homeworks' ? (
+                    <Typography fontWeight='700'>Домашняя работа</Typography>
+                ) : (
+                    <Link href='/homeworks'>
+                        <MaterialLink component='button' underline='hover' className={styles.navbar__link}>
+                            Домашняя работа
+                        </MaterialLink>
+                    </Link>
+                )}
             </nav>
-            <Box
-                display='flex'
-                alignItems='center'
-                gap='8px'
-                marginLeft='auto'
-                sx={{ cursor: 'pointer' }}
-                onClick={handleOpen}>
-                <Avatar sx={{ bgcolor: 'var(--main-dark-color)' }}>{userInfo.fullname[0]}</Avatar>
+            <Box className={styles.navbar__avatarWrapper} onClick={handleOpen}>
+                <Avatar className={styles.navbar__avatar}>{userInfo.fullname[0]}</Avatar>
             </Box>
             <Menu id='basic-menu' anchorEl={anchorEl} open={isOpen} onClose={handleClose}>
                 <MenuItem onClick={handleClickSettingsButton}>Настройки</MenuItem>

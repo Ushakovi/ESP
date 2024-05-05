@@ -1,12 +1,13 @@
-import { sql } from '@vercel/postgres';
+import { Container } from '@mui/material';
+import Navbar from '@/components/navbar';
 
-export default async function Home() {
-    const { rows } = await sql`SELECT * FROM users`;
-
+export default function Home() {
     return (
-        <div>
-            <p>Main page</p>
-            {rows.length > 0 && rows.map((user) => <p key={user.id}>{`${user.name} by id: ${user.id}`}</p>)}
-        </div>
+        <main>
+            <Navbar />
+            <Container maxWidth='lg'>
+                <p>Main page</p>
+            </Container>
+        </main>
     );
 }

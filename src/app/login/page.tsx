@@ -4,10 +4,7 @@ import { useState, useEffect } from 'react';
 import { useFormState } from 'react-dom';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import MaterialLink from '@mui/material/Link';
-import { Alert } from '@mui/material';
+import { Alert, TextField, Button, Link as MaterialLink } from '@mui/material';
 import { submitLogin } from '@/utils/server/actions';
 import styles from './page.module.css';
 
@@ -32,11 +29,12 @@ export default function Page() {
     }, [formState]);
 
     return (
-        <>
+        <main>
             {alertShow && (
                 <Alert
                     sx={{
-                        marginTop: '20px',
+                        width: '95%',
+                        margin: '20px auto 0',
                     }}
                     severity={alertShow.alertStatus === 'success' ? 'success' : 'error'}
                     onClose={() => setAlertShow(null)}>
@@ -63,7 +61,7 @@ export default function Page() {
                         required
                     />
                     <Button type='submit' variant='contained'>
-                        Войти
+                        <span>Войти</span>
                     </Button>
                 </form>
                 <Link href='/registration'>
@@ -72,6 +70,6 @@ export default function Page() {
                     </MaterialLink>
                 </Link>
             </div>
-        </>
+        </main>
     );
 }

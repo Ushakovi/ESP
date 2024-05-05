@@ -6,7 +6,7 @@ export default function Page() {
         <main>
             <Navbar />
             <Container maxWidth='lg'>
-                <p>Homeworks check page</p>
+                <p>Settings</p>
             </Container>
         </main>
     );

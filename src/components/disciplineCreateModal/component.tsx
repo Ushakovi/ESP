@@ -2,11 +2,11 @@
 
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';
+import { redirect } from 'next/navigation';
 import { Alert, Button, Modal, TextField, TextareaAutosize } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { submitCreateDiscipline } from '@/utils/server/actions';
 import styles from './component.module.css';
-import { redirect } from 'next/navigation';
 
 export default function Component({
     isOpen,
@@ -26,13 +26,10 @@ export default function Component({
             setIsOpen(false);
             setTimeout(() => setAlertShow(null), 2000);
             redirect('/');
-            // setAlertShow({
-            //     alertStatus: 'success',
-            //     alertText: formState.statusText,
-            // });
         }
 
         if (formState?.status === 400) {
+            setTimeout(() => setAlertShow(null), 2000);
             setAlertShow({
                 alertStatus: 'error',
                 alertText: formState.statusText,
@@ -73,7 +70,7 @@ export default function Component({
                         />
                         <TextareaAutosize
                             className={styles.modal__formTextarea}
-                            minRows={3}
+                            minRows={5}
                             name='description'
                             placeholder='Описание'
                         />

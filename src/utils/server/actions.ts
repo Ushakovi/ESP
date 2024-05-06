@@ -145,7 +145,7 @@ export async function submitCreateDiscipline(prevState: any, formData: FormData)
             statusText: 'Unauthorized',
         });
     }
-    const verification = verify(authCookie, process.env.JWT_SECRET as string);
+    const verification: any = verify(authCookie, process.env.JWT_SECRET as string);
 
     if (name && description) {
         try {

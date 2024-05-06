@@ -1,18 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { TextField, Pagination as MaterialPagination, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { Discipline } from '@/types';
+import { UserInfoContext } from '@/utils/client/userInfoProvider';
 import Pagination from '@/utils/client/pagination';
 import DisciplineCard from '@/components/disciplineCard';
 import DisciplineModal from '@/components/disciplineCreateModal';
+import { Discipline } from '@/types';
 import styles from './components.module.css';
 
 export default function Component({ disciplines }: { disciplines: Discipline[] }) {
     const [filteredList, setFilteredList] = useState<Discipline[]>(disciplines);
     const [page, setPage] = useState(1);
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const userInfo: any = useContext(UserInfoContext);
 
     const pagination = new Pagination(filteredList, 5);
     const pages = pagination.getPages()[page];
@@ -43,10 +45,12 @@ export default function Component({ disciplines }: { disciplines: Discipline[] }
                     className={styles.search__field}
                     onChange={handleChange}
                 />
-                <Button type='submit' variant='contained' onClick={handleModalOpen}>
-                    <AddIcon fontSize='small' />
-                    Создать
-                </Button>
+                {userInfo.role === 'Преподователь' && (
+                    <Button type='submit' variant='contained' onClick={handleModalOpen}>
+                        <AddIcon fontSize='small' />
+                        Создать
+                    </Button>
+                )}
             </div>
             <div className={styles.cards}>
                 {cardsNotEmpry ? (

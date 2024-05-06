@@ -2,7 +2,8 @@
 
 import { cookies } from 'next/headers';
 import { sql } from '@vercel/postgres';
-import jwt from 'jsonwebtoken';
+import jwt, { verify } from 'jsonwebtoken';
+import { revalidatePath } from 'next/cache';
 
 export async function submitLogin(prevState: any, formData: FormData) {
     const email = String(formData.get('email'));
@@ -74,7 +75,7 @@ export async function submitRegistration(prevState: any, formData: FormData) {
         try {
             const { rows: roles } = await sql`SELECT * FROM roles where role = ${role}`;
             if (roles.length > 0) {
-                await sql`INSERT INTO users (email, fullname, phone, password, role_id) VALUES (${email}, ${fullname}, ${phone}, crypt(${password}, gen_salt('md5')), ${roles[0].id});`;
+                await sql`INSERT INTO users (email, fullname, phone, password, role_id) VALUES (${email}, ${fullname}, ${phone}, crypt(${password}, gen_salt('md5')), ${roles[0].id})`;
             }
 
             const { rows: newUsers } =
@@ -120,6 +121,41 @@ export async function submitRegistration(prevState: any, formData: FormData) {
                     statusText: 'Произошла ошибка',
                 };
             }
+        } catch (err) {
+            return {
+                status: 400,
+                statusText: 'Произошла ошибка',
+            };
+        }
+    } else {
+        return {
+            status: 400,
+            statusText: 'Произошла ошибка',
+        };
+    }
+}
+
+export async function submitCreateDiscipline(prevState: any, formData: FormData) {
+    const name = String(formData.get('name'));
+    const description = String(formData.get('description'));
+    const authCookie = cookies().get('token')?.value;
+    if (!authCookie) {
+        return new Response(null, {
+            status: 401,
+            statusText: 'Unauthorized',
+        });
+    }
+    const verification = verify(authCookie, process.env.JWT_SECRET as string);
+
+    if (name && description) {
+        try {
+            await sql`INSERT INTO disciplines (name, description, creator_id) VALUES (${name}, ${description}, ${verification.id})`;
+            revalidatePath('/');
+
+            return {
+                status: 200,
+                statusText: 'Дисциплина успешно создана',
+            };
         } catch (err) {
             return {
                 status: 400,

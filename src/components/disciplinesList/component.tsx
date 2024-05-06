@@ -1,21 +1,22 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, TextField, Pagination as MaterialPagination } from '@mui/material';
+import { TextField, Pagination as MaterialPagination, Button } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import { Discipline } from '@/types';
 import Pagination from '@/utils/client/pagination';
+import DisciplineCard from '@/components/disciplineCard';
+import DisciplineModal from '@/components/disciplineCreateModal';
 import styles from './components.module.css';
 
 export default function Component({ disciplines }: { disciplines: Discipline[] }) {
     const [filteredList, setFilteredList] = useState<Discipline[]>(disciplines);
     const [page, setPage] = useState(1);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
 
-    const pagination = new Pagination(filteredList, 6);
+    const pagination = new Pagination(filteredList, 5);
     const pages = pagination.getPages()[page];
-
-    const handleClick = (discipline: Discipline) => () => {
-        console.log(discipline);
-    };
+    const cardsNotEmpry = pages && pages.length > 0;
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const searchValue = event.target.value;
@@ -28,41 +29,42 @@ export default function Component({ disciplines }: { disciplines: Discipline[] }
         setPage(value);
     };
 
+    const handleModalOpen = () => {
+        setModalIsOpen(true);
+    };
+
     return (
         <>
-            <TextField
-                type='search'
-                label='Поиск по дисциплинам'
-                variant='standard'
-                className={styles.search}
-                onChange={handleChange}
-            />
-            <div className={styles.cards}>
-                {pages.map((discipline) => (
-                    <Card key={discipline.id} className={styles.card} onClick={handleClick(discipline)}>
-                        <CardContent>
-                            <div className={styles.card__box}>
-                                <p className={styles.card__name}>{discipline.name}</p>
-                                <p>Создатель: {discipline.creator_name.split(' ').splice(0, 2).join(' ')}</p>
-                            </div>
-                            <p>
-                                {discipline.description} Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde
-                                repellat, quas a in libero, illo autem magni nihil ipsa distinctio repellendus iure
-                                inventore vitae totam sint officia dolorum suscipit nisi. Consequatur mollitia
-                                doloremque cupiditate aperiam. In quis libero, eaque aperiam suscipit ad praesentium,
-                                omnis illo, dolor saepe asperiores esse! Quis impedit molestias eveniet praesentium
-                                soluta asperiores labore fugiat quam in?
-                            </p>
-                        </CardContent>
-                    </Card>
-                ))}
+            <div className={styles.search__wrapper}>
+                <TextField
+                    type='search'
+                    label='Поиск по дисциплинам'
+                    variant='standard'
+                    className={styles.search__field}
+                    onChange={handleChange}
+                />
+                <Button type='submit' variant='contained' onClick={handleModalOpen}>
+                    <AddIcon fontSize='small' />
+                    Создать
+                </Button>
             </div>
-            <MaterialPagination
-                count={pagination.getPagesCount()}
-                page={page}
-                color='primary'
-                onChange={handleChangePage}
-            />
+            <div className={styles.cards}>
+                {cardsNotEmpry ? (
+                    pages.map((discipline) => <DisciplineCard key={discipline.id} discipline={discipline} />)
+                ) : (
+                    <p>Ничего нет</p>
+                )}
+            </div>
+            {cardsNotEmpry && (
+                <MaterialPagination
+                    count={pagination.getPagesCount()}
+                    page={page}
+                    color='primary'
+                    onChange={handleChangePage}
+                />
+            )}
+
+            <DisciplineModal isOpen={modalIsOpen} setIsOpen={setModalIsOpen} />
         </>
     );
 }

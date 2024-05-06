@@ -1,6 +1,13 @@
-.search {
+.search__field {
     width: 100%;
     margin-bottom: 20px;
+}
+
+.search__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
 }
 
 .cards {
@@ -8,26 +15,4 @@
     flex-direction: column;
     gap: 16px;
     margin-bottom: 20px;
-}
-
-.card {
-    border-radius: 8px;
-    cursor: pointer;
-    background-color: var(--second-light-color);
-    transition: background-color 0.5s;
-}
-
-.card:hover {
-    background-color: var(--second-color);
-}
-
-.card__box {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-}
-
-.card__name {
-    font-weight: 700;
 }

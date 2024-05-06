@@ -36,10 +36,12 @@ export default function Page() {
 
     useEffect(() => {
         if (formState?.status === 200) {
+            setTimeout(() => setAlertShow(null), 2000);
             redirect('/');
         }
 
         if (formState?.status === 400) {
+            setTimeout(() => setAlertShow(null), 2000);
             setAlertShow({
                 alertStatus: 'error',
                 alertText: formState.statusText,
@@ -55,10 +57,7 @@ export default function Page() {
         <main>
             {alertShow && (
                 <Alert
-                    sx={{
-                        width: '95%',
-                        margin: '20px auto 0',
-                    }}
+                    className={styles.alert}
                     severity={alertShow.alertStatus === 'success' ? 'success' : 'error'}
                     onClose={() => setAlertShow(null)}>
                     {alertShow.alertText}

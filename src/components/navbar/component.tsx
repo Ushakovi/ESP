@@ -26,10 +26,6 @@ export default function Component() {
         if (res.status === 200) router.push('/');
     };
 
-    const handleClickSettingsButton = () => {
-        router.push('/settings');
-    };
-
     return (
         <div className={styles.navbar}>
             <nav className={styles.navbar__menu}>
@@ -56,7 +52,6 @@ export default function Component() {
                 <Avatar className={styles.navbar__avatar}>{userInfo.fullname[0]}</Avatar>
             </Box>
             <Menu id='basic-menu' anchorEl={anchorEl} open={isOpen} onClose={handleClose}>
-                <MenuItem onClick={handleClickSettingsButton}>Настройки</MenuItem>
                 <MenuItem onClick={handleLogout}>Выйти</MenuItem>
             </Menu>
         </div>

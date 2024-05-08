@@ -56,7 +56,7 @@ export default function Component({ disciplines }: { disciplines: Discipline[] }
                 {cardsNotEmpry ? (
                     pages.map((discipline) => <DisciplineCard key={discipline.id} discipline={discipline} />)
                 ) : (
-                    <p>Ничего нет</p>
+                    <p className={styles.cards__emptyText}>Ничего не найдено</p>
                 )}
             </div>
             {cardsNotEmpry && (

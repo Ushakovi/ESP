@@ -9,7 +9,8 @@
         "lint": "eslint ./src --quiet --fix --ext .js,.jsx,.ts,.tsx --config ./.eslintrc.js",
         "precommit": "lint-staged",
         "commitlint": "commitlint --edit -- $1",
-        "prepare": "husky install .husky"
+        "prepare": "husky install .husky",
+        "env-pull": "npx vercel env pull .env.development.local"
     },
     "dependencies": {
         "next": "14.1.0",

@@ -1,8 +1,11 @@
 'use server';
 
-import { cookies } from 'next/headers';
+import fs from 'fs';
+import { pipeline } from 'stream';
+import { promisify } from 'util';
 import { sql } from '@vercel/postgres';
 import jwt, { verify } from 'jsonwebtoken';
+import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 
 export async function submitLogin(prevState: any, formData: FormData) {
@@ -166,6 +169,35 @@ export async function submitCreateDiscipline(prevState: any, formData: FormData)
         return {
             status: 400,
             statusText: 'Произошла ошибка',
+        };
+    }
+}
+
+export async function submitFileUpload(formData: FormData) {
+    const file: any = formData.get('file');
+    const filename = file.name.replaceAll(' ', '_');
+
+    if (!file) {
+        return {
+            status: 400,
+            statusText: 'Failed',
+        };
+    }
+
+    try {
+        const pump = promisify(pipeline);
+        const filePath = `./files/${filename}`;
+        await pump(file.stream(), fs.createWriteStream(filePath));
+        console.log(filePath);
+
+        return {
+            status: 201,
+            statusText: 'Success',
+        };
+    } catch (error) {
+        return {
+            status: 400,
+            statusText: error,
         };
     }
 }

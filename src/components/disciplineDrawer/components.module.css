@@ -1,0 +1,65 @@
+.drawer__body {
+    min-width: 600px;
+    max-width: 600px;
+    padding: 40px;
+}
+
+.drawer__title {
+    margin-bottom: 12px;
+}
+
+.drawer__creatorWrapper {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+}
+
+.drawer__creatorName {
+    font-weight: 700;
+}
+
+.drawer__creatorIcon {
+    width: 18px;
+    height: 18px;
+}
+
+.drawer__description {
+    white-space: pre-wrap;
+}
+
+.drawer__actions {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    gap: 20px;
+}
+
+.modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 0px 12px 0px #000000;
+    padding: 16px;
+}
+
+.modal__titleWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.modal__actions {
+    display: flex;
+    gap: 20px;
+}
+
+.modal__closeIcon {
+    cursor: pointer;
+}

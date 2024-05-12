@@ -1,12 +1,9 @@
 'use server';
 
-import fs from 'fs';
-import { pipeline } from 'stream';
-import { promisify } from 'util';
 import { sql } from '@vercel/postgres';
 import jwt, { verify } from 'jsonwebtoken';
 import { cookies } from 'next/headers';
-import { revalidatePath } from 'next/cache';
+import saveFile from './saveFile';
 
 export async function submitLogin(prevState: any, formData: FormData) {
     const email = String(formData.get('email'));
@@ -139,8 +136,6 @@ export async function submitRegistration(prevState: any, formData: FormData) {
 }
 
 export async function submitCreateDiscipline(prevState: any, formData: FormData) {
-    const name = String(formData.get('name'));
-    const description = String(formData.get('description'));
     const authCookie = cookies().get('token')?.value;
     if (!authCookie) {
         return new Response(null, {
@@ -148,12 +143,14 @@ export async function submitCreateDiscipline(prevState: any, formData: FormData)
             statusText: 'Unauthorized',
         });
     }
+
+    const name = String(formData.get('name'));
+    const description = String(formData.get('description'));
     const verification: any = verify(authCookie, process.env.JWT_SECRET as string);
 
     if (name && description) {
         try {
             await sql`INSERT INTO disciplines (name, description, creator_id) VALUES (${name}, ${description}, ${verification.id})`;
-            revalidatePath('/');
 
             return {
                 status: 200,
@@ -174,8 +171,15 @@ export async function submitCreateDiscipline(prevState: any, formData: FormData)
 }
 
 export async function submitFileUpload(formData: FormData) {
+    const authCookie = cookies().get('token')?.value;
+    if (!authCookie) {
+        return new Response(null, {
+            status: 401,
+            statusText: 'Unauthorized',
+        });
+    }
+
     const file: any = formData.get('file');
-    const filename = file.name.replaceAll(' ', '_');
 
     if (!file) {
         return {
@@ -185,10 +189,8 @@ export async function submitFileUpload(formData: FormData) {
     }
 
     try {
-        const pump = promisify(pipeline);
-        const filePath = `./files/${filename}`;
-        await pump(file.stream(), fs.createWriteStream(filePath));
-        console.log(filePath);
+        const res = await saveFile(file);
+        console.log(res);
 
         return {
             status: 201,

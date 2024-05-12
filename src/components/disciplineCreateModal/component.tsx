@@ -5,7 +5,7 @@ import { useFormState } from 'react-dom';
 import { redirect } from 'next/navigation';
 import { Alert, Button, Modal, TextField, TextareaAutosize } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { submitCreateDiscipline, submitFileUpload } from '@/utils/server/actions';
+import { submitCreateDiscipline } from '@/utils/server/actions';
 import styles from './component.module.css';
 
 export default function Component({
@@ -49,26 +49,14 @@ export default function Component({
                     {alertShow.alertText}
                 </Alert>
             )}
-            <Modal
-                open={isOpen}
-                onClose={handleClose}
-                aria-labelledby='modal-modal-title'
-                aria-describedby='modal-modal-description'>
+            <Modal open={isOpen} onClose={handleClose}>
                 <div className={styles.modal}>
-                    <form action={submitFileUpload} className={styles.modal__form}>
+                    <form action={formAction} className={styles.modal__form}>
                         <div className={styles.modal__titleWrapper}>
                             <h3>Создание дисциплины</h3>
-                            <CloseIcon className={styles.closeIcon} onClick={handleClose} />
+                            <CloseIcon className={styles.modal__closeIcon} onClick={handleClose} />
                         </div>
                         <TextField
-                            name='file'
-                            label='file'
-                            placeholder='file'
-                            variant='outlined'
-                            type='file'
-                            required
-                        />
-                        {/* <TextField
                             name='name'
                             label='Название'
                             placeholder='Название'
@@ -81,7 +69,7 @@ export default function Component({
                             minRows={5}
                             name='description'
                             placeholder='Описание'
-                        /> */}
+                        />
                         <Button type='submit' variant='contained'>
                             <span>Создать</span>
                         </Button>

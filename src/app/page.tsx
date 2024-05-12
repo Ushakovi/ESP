@@ -1,18 +1,37 @@
-import { sql } from '@vercel/postgres';
-import { Container } from '@mui/material';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { CircularProgress, Container } from '@mui/material';
 import Navbar from '@/components/navbar';
 import DisciplinesList from '@/components/disciplinesList';
 import { Discipline } from '@/types';
+import styles from './page.module.css';
 
-export default async function Home() {
-    const { rows: disciplines } =
-        await sql`SELECT ds.id, ds.name, ds.description, us.fullname as creator_name FROM disciplines ds join users us on ds.creator_id = us.id`;
+export default function Home() {
+    const [disciplines, setDisciplines] = useState<Discipline[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchDisciplines = async () => {
+            const res = await fetch('/api/disciplines');
+            const disciplines = await res.json();
+            setDisciplines(disciplines.data);
+            setLoading(false);
+        };
+        fetchDisciplines();
+    }, []);
 
     return (
         <main>
             <Navbar />
             <Container maxWidth='lg' sx={{ padding: '40px 0' }}>
-                <DisciplinesList disciplines={disciplines as Discipline[]} />
+                {loading ? (
+                    <div className={styles.loader}>
+                        <CircularProgress />
+                    </div>
+                ) : (
+                    <DisciplinesList disciplines={disciplines} />
+                )}
             </Container>
         </main>
     );

@@ -37,6 +37,6 @@
     font-family: inherit;
 }
 
-.closeIcon {
+.modal__closeIcon {
     cursor: pointer;
 }

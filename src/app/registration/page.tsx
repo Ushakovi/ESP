@@ -28,10 +28,16 @@ export default function Page() {
     const [formState, formAction] = useFormState(submitRegistration, null);
 
     useEffect(() => {
-        fetch('/api/roles')
-            .then((res) => res.json())
-            .then(({ data }) => setRoles(data))
-            .catch((err) => console.error(err));
+        const fetchRole = async () => {
+            try {
+                const res = await fetch('/api/roles');
+                const { data } = await res.json();
+                setRoles(data);
+            } catch (err: any) {
+                console.error(err);
+            }
+        };
+        fetchRole();
     }, []);
 
     useEffect(() => {

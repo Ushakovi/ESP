@@ -16,7 +16,7 @@ export default function Component({ disciplines }: { disciplines: Discipline[] }
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const userInfo: any = useContext(UserInfoContext);
 
-    const pagination = new Pagination(filteredList, 5);
+    const pagination = new Pagination(filteredList, 10);
     const pages = pagination.getPages()[page];
     const cardsNotEmpry = pages && pages.length > 0;
 

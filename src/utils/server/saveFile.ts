@@ -2,13 +2,15 @@ import fs from 'fs';
 import { pipeline } from 'stream';
 import { promisify } from 'util';
 
-const saveFile = async (file: any) => {
+const saveFile = async (file: any, folder: 'materials' | 'lectures') => {
     const pump = promisify(pipeline);
-    const filename = file.name.replaceAll(' ', '_');
-    const filePath = `./files/${filename}`;
-    await pump(file.stream(), fs.createWriteStream(filePath));
-
-    return filePath;
+    if (file && file.size) {
+        const filename = Buffer.from(file.name.replaceAll(' ', '_'), 'latin1').toString('utf8');
+        const filePath = `./files/${folder}/${filename}`;
+        await pump(file.stream(), fs.createWriteStream(filePath));
+        return filePath;
+    }
+    return;
 };
 
 export default saveFile;

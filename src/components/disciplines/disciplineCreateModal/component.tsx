@@ -3,7 +3,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';
 import { redirect } from 'next/navigation';
-import { Alert, Button, Modal, TextField, TextareaAutosize } from '@mui/material';
+import { Alert, Button, Modal, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { submitCreateDiscipline } from '@/utils/server/actions';
 import styles from './component.module.css';
@@ -43,7 +43,7 @@ export default function Component({
         <>
             {alertShow && (
                 <Alert
-                    className={styles.alert}
+                    sx={{ width: '95%', position: 'absolute', top: '20px', left: '50%', transform: 'translateX(-50%)' }}
                     severity={alertShow.alertStatus === 'success' ? 'success' : 'error'}
                     onClose={() => setAlertShow(null)}>
                     {alertShow.alertText}
@@ -54,7 +54,7 @@ export default function Component({
                     <form action={formAction} className={styles.modal__form}>
                         <div className={styles.modal__titleWrapper}>
                             <h3>Создание дисциплины</h3>
-                            <CloseIcon className={styles.modal__closeIcon} onClick={handleClose} />
+                            <CloseIcon sx={{ cursor: 'pointer' }} onClick={handleClose} />
                         </div>
                         <TextField
                             name='name'
@@ -64,12 +64,7 @@ export default function Component({
                             type='text'
                             required
                         />
-                        <TextareaAutosize
-                            className={styles.modal__formTextarea}
-                            minRows={5}
-                            name='description'
-                            placeholder='Описание'
-                        />
+                        <textarea className={styles.modal__formTextarea} name='description' placeholder='Описание' />
                         <Button type='submit' variant='contained'>
                             <span>Создать</span>
                         </Button>

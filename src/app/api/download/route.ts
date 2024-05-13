@@ -13,8 +13,8 @@ export async function GET(req: any) {
 
     try {
         const { searchParams } = new URL(req.url);
-        const fileName = searchParams.get('fileName');
-        const buffer = await readFile(path.join(process.cwd(), `files/${fileName}`));
+        const filePath = String(searchParams.get('filePath'));
+        const buffer = await readFile(path.join(process.cwd(), filePath));
 
         return new Response(buffer, {
             status: 200,

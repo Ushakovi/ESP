@@ -3,20 +3,29 @@
 import { useState } from 'react';
 import { Card } from '@mui/material';
 import { Discipline } from '@/types';
-import DisciplineDrawer from '@/components/disciplineDrawer';
+import DisciplineDrawer from '@/components/disciplines/disciplineDrawer';
 import styles from './components.module.css';
 
 export default function Component({ discipline }: { discipline: Discipline }) {
     const [open, setOpen] = useState(false);
 
-    const handleClick = (discipline: Discipline) => () => {
-        console.log(discipline);
+    const handleClick = () => {
         setOpen(!open);
     };
 
     return (
         <>
-            <Card className={styles.card} onClick={handleClick(discipline)}>
+            <Card
+                sx={{
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    backgroundColor: 'var(--second-light-color)',
+                    transition: 'background-color 0.5s',
+                    '&:hover': {
+                        backgroundColor: 'var(--second-color)',
+                    },
+                }}
+                onClick={handleClick}>
                 <div className={styles.card__box}>
                     <p className={styles.card__name}>{discipline.name}</p>
                 </div>

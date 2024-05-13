@@ -3,7 +3,7 @@
 import { useContext, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { Avatar, Box, Menu, MenuItem, Link as MaterialLink, Typography } from '@mui/material';
+import { Avatar, Menu, MenuItem, Link as MaterialLink, Typography } from '@mui/material';
 import { UserInfoContext } from '@/utils/client/userInfoProvider';
 import styles from './component.module.css';
 
@@ -29,28 +29,28 @@ export default function Component() {
     return (
         <div className={styles.navbar}>
             <nav className={styles.navbar__menu}>
-                {pathname === '/' ? (
+                {pathname === '/' || pathname.includes('discipline') ? (
                     <Typography fontWeight='700'>Дисциплины</Typography>
                 ) : (
                     <Link href='/'>
-                        <MaterialLink component='button' underline='hover' className={styles.navbar__link}>
+                        <MaterialLink component='button' underline='hover' sx={{ color: '#000000' }}>
                             Дисциплины
                         </MaterialLink>
                     </Link>
                 )}
-                {pathname === '/homeworks' ? (
+                {pathname === '/homeworks' || pathname.includes('homework') ? (
                     <Typography fontWeight='700'>Домашняя работа</Typography>
                 ) : (
                     <Link href='/homeworks'>
-                        <MaterialLink component='button' underline='hover' className={styles.navbar__link}>
+                        <MaterialLink component='button' underline='hover' sx={{ color: '#000000' }}>
                             Домашняя работа
                         </MaterialLink>
                     </Link>
                 )}
             </nav>
-            <Box className={styles.navbar__avatarWrapper} onClick={handleOpen}>
-                <Avatar className={styles.navbar__avatar}>{userInfo.fullname[0]}</Avatar>
-            </Box>
+            <div className={styles.navbar__avatarWrapper} onClick={handleOpen}>
+                <Avatar sx={{ backgroundColor: 'var(--main-dark-color)' }}>{userInfo.fullname[0]}</Avatar>
+            </div>
             <Menu id='basic-menu' anchorEl={anchorEl} open={isOpen} onClose={handleClose}>
                 <MenuItem onClick={handleLogout}>Выйти</MenuItem>
             </Menu>

@@ -148,7 +148,7 @@ export async function submitCreateDiscipline(prevState: any, formData: FormData)
     const description = String(formData.get('description'));
     const verification: any = verify(authCookie, process.env.JWT_SECRET as string);
 
-    if (name && description) {
+    if (name) {
         try {
             await sql`INSERT INTO disciplines (name, description, creator_id) VALUES (${name}, ${description}, ${verification.id})`;
 
@@ -170,7 +170,7 @@ export async function submitCreateDiscipline(prevState: any, formData: FormData)
     }
 }
 
-export async function submitFileUpload(formData: FormData) {
+export async function submitCreateLesson(prevState: any, formData: FormData) {
     const authCookie = cookies().get('token')?.value;
     if (!authCookie) {
         return new Response(null, {
@@ -179,27 +179,37 @@ export async function submitFileUpload(formData: FormData) {
         });
     }
 
-    const file: any = formData.get('file');
+    const name = String(formData.get('name'));
+    const description = String(formData.get('description'));
+    const materials = formData.getAll('materials');
+    const lecture = formData.get('lecture');
+    const disciplineId = String(formData.get('discipline_id'));
 
-    if (!file) {
+    const materialsResults = await materials.map(async (material) => await saveFile(material, 'materials'));
+    const materialsPaths = await Promise.all(materialsResults);
+    const lectureResult = await saveFile(lecture, 'lectures');
+    const lecturePath = await lectureResult;
+
+    const verification: any = verify(authCookie, process.env.JWT_SECRET as string);
+
+    if (name) {
+        try {
+            await sql`INSERT INTO lessons (name, description, meterials, lecture, discipline_id, creator_id) VALUES (${name}, ${description}, ${materialsPaths.join(';')}, ${lecturePath}, ${disciplineId}, ${verification.id})`;
+
+            return {
+                status: 200,
+                statusText: 'Урок успешно создан',
+            };
+        } catch (err) {
+            return {
+                status: 400,
+                statusText: 'Произошла ошибка',
+            };
+        }
+    } else {
         return {
             status: 400,
-            statusText: 'Failed',
-        };
-    }
-
-    try {
-        const res = await saveFile(file);
-        console.log(res);
-
-        return {
-            status: 201,
-            statusText: 'Success',
-        };
-    } catch (error) {
-        return {
-            status: 400,
-            statusText: error,
+            statusText: 'Произошла ошибка',
         };
     }
 }

@@ -3,10 +3,10 @@
 import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { Button, Drawer, Link as MaterialLink, Modal } from '@mui/material';
+import { Button, Divider, Drawer, Link as MaterialLink } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
-import CloseIcon from '@mui/icons-material/Close';
 import { UserInfoContext } from '@/utils/client/userInfoProvider';
+import DeleteConfirmModal from '@/components/deleteConfirmModal';
 import { Discipline } from '@/types';
 import styles from './components.module.css';
 
@@ -17,7 +17,7 @@ export default function Component({
 }: {
     isOpen: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
-    discipline?: Discipline;
+    discipline: Discipline;
 }) {
     const userInfo: any = useContext(UserInfoContext);
     const [needRefresh, setNeedRefresh] = useState(false);
@@ -60,41 +60,33 @@ export default function Component({
                         </p>
                         {discipline.creator_email && (
                             <MaterialLink href={`mailto:${discipline.creator_email}`}>
-                                <EmailIcon className={styles.drawer__creatorIcon} />
+                                <EmailIcon sx={{ width: ' 18px', height: '18px' }} />
                             </MaterialLink>
                         )}
                     </div>
                     <p className={styles.drawer__description}>{discipline.description}</p>
                 </div>
-                <div className={styles.drawer__actions}>
-                    {userIsCreator && (
-                        <Button type='button' variant='contained' onClick={toggleModal}>
-                            Удалить
-                        </Button>
-                    )}
-                    <Link href={`/discipline/${discipline.id}`}>
-                        <MaterialLink component='button' underline='hover' className={styles.navbar__link}>
-                            Подробнее
-                        </MaterialLink>
-                    </Link>
+                <div className={styles.drawer__footer}>
+                    <Divider />
+                    <div className={styles.drawer__actions}>
+                        {userIsCreator && (
+                            <Button type='button' variant='contained' onClick={toggleModal}>
+                                Удалить
+                            </Button>
+                        )}
+                        <Link href={`/discipline/${discipline.id}`}>
+                            <MaterialLink component='button' underline='hover'>
+                                Подробнее
+                            </MaterialLink>
+                        </Link>
+                    </div>
                 </div>
             </Drawer>
-            <Modal open={confirmDeleteModalIsOpen} onClose={toggleModal}>
-                <div className={styles.modal}>
-                    <div className={styles.modal__titleWrapper}>
-                        <h3>Подтверждаете ли вы удаление?</h3>
-                        <CloseIcon className={styles.modal__closeIcon} onClick={toggleModal} />
-                    </div>
-                    <div className={styles.modal__actions}>
-                        <Button type='button' variant='contained' onClick={handleDelete}>
-                            Подтвердить
-                        </Button>
-                        <Button type='button' variant='outlined' onClick={toggleModal}>
-                            Закрыть
-                        </Button>
-                    </div>
-                </div>
-            </Modal>
+            <DeleteConfirmModal
+                isOpen={confirmDeleteModalIsOpen}
+                setIsOpen={setConfirmDeleteModalIsOpen}
+                handleDelete={handleDelete}
+            />
         </>
     );
 }

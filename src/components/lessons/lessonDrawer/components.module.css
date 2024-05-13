@@ -1,0 +1,53 @@
+.drawer__body {
+    min-width: 600px;
+    max-width: 600px;
+    padding: 40px;
+}
+
+.drawer__title {
+    margin-bottom: 12px;
+}
+
+.drawer__creatorWrapper {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+}
+
+.drawer__creatorName {
+    font-weight: 700;
+}
+
+.drawer__description {
+    white-space: pre-wrap;
+    margin-bottom: 20px;
+}
+
+.drawer__footer {
+    margin-top: auto;
+    width: 100%;
+}
+
+.drawer__actions {
+    display: flex;
+    align-items: center;
+    padding: 40px;
+    gap: 20px;
+}
+
+.drawer__fileWrapper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.drawer__lecture,
+.drawer__materials {
+    margin-bottom: 20px;
+}
+
+.drawer__lectureTitle,
+.drawer__meterialsTitle {
+    font-weight: 700;
+    margin-bottom: 12px;
+}

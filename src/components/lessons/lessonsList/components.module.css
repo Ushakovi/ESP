@@ -1,0 +1,23 @@
+.loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lessons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.lessons__list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.lessons__emptyText {
+    font-weight: 700;
+}

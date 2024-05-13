@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { CircularProgress, Container } from '@mui/material';
 import Navbar from '@/components/navbar';
-import DisciplinesList from '@/components/disciplinesList';
+import DisciplinesList from '@/components/disciplines/disciplinesList';
 import { Discipline } from '@/types';
 import styles from './page.module.css';
 

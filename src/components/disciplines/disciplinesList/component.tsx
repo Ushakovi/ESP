@@ -5,8 +5,8 @@ import { TextField, Pagination as MaterialPagination, Button } from '@mui/materi
 import AddIcon from '@mui/icons-material/Add';
 import { UserInfoContext } from '@/utils/client/userInfoProvider';
 import Pagination from '@/utils/client/pagination';
-import DisciplineCard from '@/components/disciplineCard';
-import DisciplineModal from '@/components/disciplineCreateModal';
+import DisciplineCard from '@/components/disciplines/disciplineCard';
+import DisciplineCreateModal from '@/components/disciplines/disciplineCreateModal';
 import { Discipline } from '@/types';
 import styles from './components.module.css';
 
@@ -42,11 +42,11 @@ export default function Component({ disciplines }: { disciplines: Discipline[] }
                     type='search'
                     label='Поиск по дисциплинам'
                     variant='standard'
-                    className={styles.search__field}
+                    sx={{ width: '100%', marginBottom: '20px' }}
                     onChange={handleChange}
                 />
                 {userInfo.role === 'Преподователь' && (
-                    <Button type='submit' variant='contained' onClick={handleModalOpen}>
+                    <Button type='button' variant='contained' onClick={handleModalOpen}>
                         <AddIcon fontSize='small' />
                         Создать
                     </Button>
@@ -67,8 +67,7 @@ export default function Component({ disciplines }: { disciplines: Discipline[] }
                     onChange={handleChangePage}
                 />
             )}
-
-            <DisciplineModal isOpen={modalIsOpen} setIsOpen={setModalIsOpen} />
+            <DisciplineCreateModal isOpen={modalIsOpen} setIsOpen={setModalIsOpen} />
         </>
     );
 }

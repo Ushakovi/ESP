@@ -34,7 +34,13 @@ export default function Page() {
         <main>
             {alertShow && (
                 <Alert
-                    className={styles.alert}
+                    sx={{
+                        width: '95%',
+                        position: ' absolute',
+                        top: '20px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                    }}
                     severity={alertShow.alertStatus === 'success' ? 'success' : 'error'}
                     onClose={() => setAlertShow(null)}>
                     {alertShow.alertText}

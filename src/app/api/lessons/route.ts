@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
         const disciplineId = searchParams.get('discipline_id');
 
         const { rows: lessons } =
-            await sql`SELECT ls.id, ls.name, ls.description, ls.meterials, ls.lecture, ls.discipline_id, ls.creator_id, us.fullname as creator_name, us.email as creator_email FROM lessons ls join users us on ls.creator_id = us.id where ls.discipline_id = ${disciplineId}`;
+            await sql`SELECT ls.id, ls.name, ls.description, ls.meterials, ls.lecture, ls.discipline_id, ds.name as discipline_name, ls.creator_id, us.fullname as creator_name, us.email as creator_email FROM lessons ls join users us on ls.creator_id = us.id join disciplines ds on ls.discipline_id = ds.id where ls.discipline_id = ${disciplineId}`;
 
         return new Response(JSON.stringify({ data: lessons }), {
             status: 200,

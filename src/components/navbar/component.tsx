@@ -38,15 +38,6 @@ export default function Component() {
                         </MaterialLink>
                     </Link>
                 )}
-                {pathname === '/homeworks' || pathname.includes('homework') ? (
-                    <Typography fontWeight='700'>Домашняя работа</Typography>
-                ) : (
-                    <Link href='/homeworks'>
-                        <MaterialLink component='button' underline='hover' sx={{ color: '#000000' }}>
-                            Домашняя работа
-                        </MaterialLink>
-                    </Link>
-                )}
             </nav>
             <div className={styles.navbar__avatarWrapper} onClick={handleOpen}>
                 <Avatar sx={{ backgroundColor: 'var(--main-dark-color)' }}>{userInfo.fullname[0]}</Avatar>

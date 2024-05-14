@@ -20,13 +20,13 @@ export default function Page({ params }: { params: { id: string } }) {
     const [needRefresh, setNeedRefresh] = useState(false);
 
     useEffect(() => {
-        const fetchDisciplines = async () => {
+        const fetchDiscipline = async () => {
             const res = await fetch(`/api/disciplines/${params.id}`);
             const discipline = await res.json();
             setDiscipline(discipline.data);
             setDisciplineLoading(false);
         };
-        fetchDisciplines();
+        fetchDiscipline();
     }, [params.id]);
 
     useEffect(() => {
@@ -34,14 +34,16 @@ export default function Page({ params }: { params: { id: string } }) {
     }, [needRefresh]);
 
     if (disciplineLoading)
-        <main>
-            <Navbar />
-            <Container maxWidth='lg' sx={{ padding: '40px 0' }}>
-                <div className={styles.loader}>
-                    <CircularProgress />
-                </div>
-            </Container>
-        </main>;
+        return (
+            <main>
+                <Navbar />
+                <Container maxWidth='lg' sx={{ padding: '40px 0' }}>
+                    <div className={styles.loader}>
+                        <CircularProgress />
+                    </div>
+                </Container>
+            </main>
+        );
 
     if (!discipline) return null;
 
@@ -87,7 +89,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 <LessonsList discipline={discipline} />
                 {userIsCreator && (
                     <Button type='button' variant='contained' onClick={toggleDeleteConfirmModal}>
-                        Удалить
+                        Удалить текущую дисциплину
                     </Button>
                 )}
             </Container>

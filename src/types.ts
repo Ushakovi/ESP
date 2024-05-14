@@ -13,6 +13,7 @@ export interface Lesson {
     meterials: string;
     lecture: string;
     discipline_id: number;
+    discipline_name: string;
     creator_id: number;
     creator_name: string;
     creator_email: string;

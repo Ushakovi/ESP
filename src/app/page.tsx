@@ -30,7 +30,10 @@ export default function Home() {
                         <CircularProgress />
                     </div>
                 ) : (
-                    <DisciplinesList disciplines={disciplines} />
+                    <>
+                        <h1 className={styles.title}>Дисциплины</h1>
+                        <DisciplinesList disciplines={disciplines} />
+                    </>
                 )}
             </Container>
         </main>

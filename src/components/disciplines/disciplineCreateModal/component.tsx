@@ -3,7 +3,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';
 import { redirect } from 'next/navigation';
-import { Alert, Button, Modal, TextField } from '@mui/material';
+import { Button, Modal, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { submitCreateDiscipline } from '@/utils/server/actions';
 import styles from './component.module.css';
@@ -15,25 +15,17 @@ export default function Component({
     isOpen: boolean;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-    const [alertShow, setAlertShow] = useState<{
-        alertStatus: string;
-        alertText: string;
-    } | null>(null);
+    const [buttonIsDisabled, setButtonIsDisabled] = useState(true);
     const [formState, formAction] = useFormState(submitCreateDiscipline, null);
 
     useEffect(() => {
         if (formState?.status === 200) {
             setIsOpen(false);
-            setTimeout(() => setAlertShow(null), 2000);
             redirect('/');
         }
 
         if (formState?.status === 400) {
-            setTimeout(() => setAlertShow(null), 2000);
-            setAlertShow({
-                alertStatus: 'error',
-                alertText: formState.statusText,
-            });
+            console.error(formState.statusText);
         }
     }, [formState, setIsOpen]);
 
@@ -41,14 +33,6 @@ export default function Component({
 
     return (
         <>
-            {alertShow && (
-                <Alert
-                    sx={{ width: '95%', position: 'absolute', top: '20px', left: '50%', transform: 'translateX(-50%)' }}
-                    severity={alertShow.alertStatus === 'success' ? 'success' : 'error'}
-                    onClose={() => setAlertShow(null)}>
-                    {alertShow.alertText}
-                </Alert>
-            )}
             <Modal open={isOpen} onClose={handleClose}>
                 <div className={styles.modal}>
                     <form action={formAction} className={styles.modal__form}>
@@ -63,9 +47,12 @@ export default function Component({
                             variant='outlined'
                             type='text'
                             required
+                            onChange={(event) =>
+                                event.target.value ? setButtonIsDisabled(false) : setButtonIsDisabled(true)
+                            }
                         />
                         <textarea className={styles.modal__formTextarea} name='description' placeholder='Описание' />
-                        <Button type='submit' variant='contained'>
+                        <Button type='submit' variant='contained' disabled={buttonIsDisabled}>
                             <span>Создать</span>
                         </Button>
                     </form>

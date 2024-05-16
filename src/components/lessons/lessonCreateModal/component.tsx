@@ -3,7 +3,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';
 import { redirect } from 'next/navigation';
-import { Alert, Button, Modal, TextField } from '@mui/material';
+import { Button, Modal, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
@@ -21,27 +21,19 @@ export default function Component({
     setIsOpen: Dispatch<SetStateAction<boolean>>;
     discipline: Discipline;
 }) {
-    const [alertShow, setAlertShow] = useState<{
-        alertStatus: string;
-        alertText: string;
-    } | null>(null);
     const [formState, formAction] = useFormState(submitCreateLesson, null);
     const [materials, setMaterials] = useState<File[]>([]);
     const [lecture, setLecture] = useState<File | null>(null);
+    const [buttonIsDisabled, setButtonIsDisabled] = useState(true);
 
     useEffect(() => {
         if (formState?.status === 200) {
             setIsOpen(false);
-            setTimeout(() => setAlertShow(null), 2000);
             redirect(`/discipline/${discipline.id}`);
         }
 
         if (formState?.status === 400) {
-            setTimeout(() => setAlertShow(null), 2000);
-            setAlertShow({
-                alertStatus: 'error',
-                alertText: formState.statusText,
-            });
+            console.error(formState.statusText);
         }
     }, [discipline, formState, setIsOpen]);
 
@@ -67,14 +59,6 @@ export default function Component({
 
     return (
         <>
-            {alertShow && (
-                <Alert
-                    sx={{ width: '95%', position: 'absolute', top: '20px', left: '50%', transform: 'translateX(-50%)' }}
-                    severity={alertShow.alertStatus === 'success' ? 'success' : 'error'}
-                    onClose={() => setAlertShow(null)}>
-                    {alertShow.alertText}
-                </Alert>
-            )}
             <Modal open={isOpen} onClose={handleClose}>
                 <div className={styles.modal}>
                     <form action={formAction} className={styles.modal__form}>
@@ -89,6 +73,9 @@ export default function Component({
                             variant='outlined'
                             type='text'
                             required
+                            onChange={(event) =>
+                                event.target.value ? setButtonIsDisabled(false) : setButtonIsDisabled(true)
+                            }
                         />
                         <textarea className={styles.modal__formTextarea} name='description' placeholder='Описание' />
                         <Button
@@ -135,7 +122,7 @@ export default function Component({
                                 <p>{file.name}</p>
                             </div>
                         ))}
-                        <Button type='submit' variant='contained'>
+                        <Button type='submit' variant='contained' disabled={buttonIsDisabled}>
                             <span>Создать</span>
                         </Button>
                         <input hidden name='discipline_id' type='string' defaultValue={discipline.id} />

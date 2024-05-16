@@ -8,10 +8,9 @@
     background-color: var(--second-color);
 }
 
-.navbar__menu {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+.navbar__title {
+    font-weight: 700;
+    font-size: 24px;
 }
 
 .navbar__avatarWrapper {

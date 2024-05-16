@@ -1,9 +1,8 @@
 'use client';
 
 import { useContext, useState } from 'react';
-import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
-import { Avatar, Menu, MenuItem, Link as MaterialLink, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { Avatar, Menu, MenuItem } from '@mui/material';
 import { UserInfoContext } from '@/utils/client/userInfoProvider';
 import styles from './component.module.css';
 
@@ -12,7 +11,6 @@ export default function Component() {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const isOpen = Boolean(anchorEl);
     const router = useRouter();
-    const pathname = usePathname();
 
     const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -28,17 +26,7 @@ export default function Component() {
 
     return (
         <div className={styles.navbar}>
-            <nav className={styles.navbar__menu}>
-                {pathname === '/' || pathname.includes('discipline') ? (
-                    <Typography fontWeight='700'>Дисциплины</Typography>
-                ) : (
-                    <Link href='/'>
-                        <MaterialLink component='button' underline='hover' sx={{ color: '#000000' }}>
-                            Дисциплины
-                        </MaterialLink>
-                    </Link>
-                )}
-            </nav>
+            <p className={styles.navbar__title}>Платформа обучения</p>
             <div className={styles.navbar__avatarWrapper} onClick={handleOpen}>
                 <Avatar sx={{ backgroundColor: 'var(--main-dark-color)' }}>{userInfo.fullname[0]}</Avatar>
             </div>

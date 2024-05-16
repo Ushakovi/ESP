@@ -1,0 +1,28 @@
+.card__wrapper {
+    display: flex;
+    gap: 20px;
+}
+
+.card__box {
+    padding: 16px;
+}
+
+.card__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card__userName,
+.card__estimationStatusSuccess,
+.card___estimationStatusFailed {
+    font-weight: 700;
+}
+
+.card__estimationStatusSuccess {
+    color: green;
+}
+
+.card___estimationStatusFailed {
+    color: red;
+}

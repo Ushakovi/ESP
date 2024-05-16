@@ -13,12 +13,12 @@ export async function GET(req: NextRequest) {
 
     try {
         const { searchParams } = new URL(req.url);
-        const disciplineId = searchParams.get('discipline_id');
+        const homeworkId = searchParams.get('homework_id');
 
-        const { rows: lessons } =
-            await sql`SELECT ls.id, ls.name, ls.description, ls.materials, ls.lecture, ls.discipline_id, ds.name as discipline_name, ls.creator_id, us.fullname as creator_name, us.email as creator_email FROM lessons ls join users us on ls.creator_id = us.id join disciplines ds on ls.discipline_id = ds.id where ls.discipline_id = ${disciplineId}`;
+        const { rows: comments } =
+            await sql`SELECT cfh.id, cfh.comment, cfh.homework_id, cfh.user_id, us.fullname as user_name, cfh.created_at FROM comments_for_homeworks cfh join users us on cfh.user_id = us.id where homework_id = ${homeworkId} order by cfh.created_at`;
 
-        return new Response(JSON.stringify({ data: lessons }), {
+        return new Response(JSON.stringify({ data: comments }), {
             status: 200,
             statusText: 'Success',
         });

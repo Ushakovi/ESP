@@ -1,0 +1,92 @@
+.drawer__body {
+    min-width: 600px;
+    max-width: 600px;
+    padding: 40px;
+}
+
+.drawer__creatorWrapper {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.drawer__estimationStatusSuccess,
+.drawer___estimationStatusFailed {
+    font-weight: 700;
+    margin-left: auto;
+}
+
+.drawer__estimationStatusSuccess {
+    color: green;
+}
+
+.drawer___estimationStatusFailed {
+    color: red;
+}
+
+.drawer__createdDateWrapper,
+.drawer__userCommentWrapper,
+.drawer__materialsWrapper,
+.drawer__estimationCommentWrapper,
+.drawer__estimationCommentCreateWrapper {
+    margin-bottom: 20px;
+}
+
+.drawer__materialsTitle,
+.drawer__createdDateTitle,
+.drawer__userCommentTitle,
+.drawer__estimationCommentTitle,
+.drawer__estimationCommentCreateTitle,
+.drawer__commentsWrapperTitle {
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.drawer__userComment,
+.drawer__estimationComment {
+    white-space: pre-wrap;
+}
+
+.drawer__fileWrapper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.drawer__commentsList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.drawer__commentsForm,
+.drawer__estimationCommentCreateForm {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.drawer__commentWrapper {
+    background-color: var(--main-color);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.drawer__commentBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.drawer__formTextarea {
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 200px;
+    overflow-y: scroll;
+    padding: 16.5px 14px;
+    font-size: 16px;
+    font-family: inherit;
+}

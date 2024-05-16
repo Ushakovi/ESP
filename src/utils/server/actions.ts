@@ -124,7 +124,7 @@ export async function submitRegistration(prevState: any, formData: FormData) {
         } catch (err) {
             return {
                 status: 400,
-                statusText: 'Произошла ошибка',
+                statusText: String(err),
             };
         }
     } else {
@@ -159,7 +159,7 @@ export async function submitCreateDiscipline(prevState: any, formData: FormData)
         } catch (err) {
             return {
                 status: 400,
-                statusText: 'Произошла ошибка',
+                statusText: String(err),
             };
         }
     } else {
@@ -194,7 +194,7 @@ export async function submitCreateLesson(prevState: any, formData: FormData) {
 
     if (name) {
         try {
-            await sql`INSERT INTO lessons (name, description, meterials, lecture, discipline_id, creator_id) VALUES (${name}, ${description}, ${materialsPaths.join(';')}, ${lecturePath}, ${disciplineId}, ${verification.id})`;
+            await sql`INSERT INTO lessons (name, description, materials, lecture, discipline_id, creator_id) VALUES (${name}, ${description}, ${materialsPaths.join(';')}, ${lecturePath}, ${disciplineId}, ${verification.id})`;
 
             return {
                 status: 200,
@@ -203,7 +203,161 @@ export async function submitCreateLesson(prevState: any, formData: FormData) {
         } catch (err) {
             return {
                 status: 400,
-                statusText: 'Произошла ошибка',
+                statusText: String(err),
+            };
+        }
+    } else {
+        return {
+            status: 400,
+            statusText: 'Произошла ошибка',
+        };
+    }
+}
+
+export async function submitCreateHomework(prevState: any, formData: FormData) {
+    const authCookie = cookies().get('token')?.value;
+    if (!authCookie) {
+        return new Response(null, {
+            status: 401,
+            statusText: 'Unauthorized',
+        });
+    }
+
+    const comment = String(formData.get('comment'));
+    const materials = formData.getAll('materials');
+    const lessonId = String(formData.get('lesson_id'));
+
+    const materialsResults = await materials.map(async (material) => await saveFile(material, 'homeworks'));
+    const materialsPaths = await Promise.all(materialsResults);
+
+    const verification: any = verify(authCookie, process.env.JWT_SECRET as string);
+
+    if (materials) {
+        try {
+            await sql`INSERT INTO homeworks (comment, materials, estimation_status, estimation_comment, user_id, lesson_id) VALUES (${comment}, ${materialsPaths.join(';')}, false, null, ${verification.id}, ${lessonId})`;
+
+            return {
+                status: 200,
+                statusText: 'Домашнее задание успешно сохранено',
+            };
+        } catch (err) {
+            return {
+                status: 400,
+                statusText: String(err),
+            };
+        }
+    } else {
+        return {
+            status: 400,
+            statusText: 'Произошла ошибка',
+        };
+    }
+}
+
+export async function submitUpdateHomework(prevState: any, formData: FormData) {
+    const authCookie = cookies().get('token')?.value;
+    if (!authCookie) {
+        return new Response(null, {
+            status: 401,
+            statusText: 'Unauthorized',
+        });
+    }
+
+    const comment = String(formData.get('comment'));
+    const materials = formData.getAll('materials');
+    const homeworkId = String(formData.get('homework_id'));
+
+    const materialsResults = await materials.map(async (material) => await saveFile(material, 'homeworks'));
+    const materialsPaths = await Promise.all(materialsResults);
+
+    try {
+        const { rows: homeworks } = await sql`SELECT * FROM homeworks where id = ${homeworkId}`;
+        if (homeworks.length > 0) {
+            if (comment && comment !== homeworks[0].comment) {
+                await sql`UPDATE homeworks SET comment = ${comment} WHERE id = ${homeworkId}`;
+            }
+
+            if (materialsPaths.join(';') && materialsPaths.join(';') !== homeworks[0].materials) {
+                await sql`UPDATE homeworks SET materials = ${materialsPaths.join(';')} WHERE id = ${homeworkId}`;
+            }
+
+            return {
+                status: 200,
+                statusText: 'Домашнее задание успешно обновлено',
+            };
+        } else {
+            return {
+                status: 400,
+                statusText: 'Homework is not exist',
+            };
+        }
+    } catch (err) {
+        return {
+            status: 400,
+            statusText: String(err),
+        };
+    }
+}
+
+export async function submitCreateCommentForHomework(prevState: any, formData: FormData) {
+    const authCookie = cookies().get('token')?.value;
+    if (!authCookie) {
+        return new Response(null, {
+            status: 401,
+            statusText: 'Unauthorized',
+        });
+    }
+
+    const comment = String(formData.get('comment'));
+    const homeworkId = String(formData.get('homework_id'));
+
+    const verification: any = verify(authCookie, process.env.JWT_SECRET as string);
+
+    if (comment && homeworkId && verification.id) {
+        try {
+            await sql`INSERT INTO comments_for_homeworks (comment, homework_id, user_id) VALUES (${comment}, ${homeworkId}, ${verification.id})`;
+
+            return {
+                status: 200,
+                statusText: 'Комментарий сохранен',
+            };
+        } catch (err) {
+            return {
+                status: 400,
+                statusText: String(err),
+            };
+        }
+    } else {
+        return {
+            status: 400,
+            statusText: 'Произошла ошибка',
+        };
+    }
+}
+
+export async function submitCreateEstimationCommentForHomework(prevState: any, formData: FormData) {
+    const authCookie = cookies().get('token')?.value;
+    if (!authCookie) {
+        return new Response(null, {
+            status: 401,
+            statusText: 'Unauthorized',
+        });
+    }
+
+    const estimationComment = String(formData.get('estimationComment'));
+    const homeworkId = String(formData.get('homework_id'));
+
+    if (estimationComment && homeworkId) {
+        try {
+            await sql`UPDATE homeworks SET estimation_status = true, estimation_comment = ${estimationComment} WHERE id = ${homeworkId}`;
+            return {
+                status: 200,
+                statusText: 'Комментарий сохранен',
+            };
+        } catch (err) {
+            return {
+                status: 400,
+                statusText: String(err),
             };
         }
     } else {

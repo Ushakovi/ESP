@@ -84,10 +84,10 @@ export default function Component({
                             </div>
                         </div>
                     )}
-                    {lesson.meterials && (
+                    {lesson.materials && (
                         <div className={styles.drawer__materials}>
-                            <p className={styles.drawer__meterialsTitle}>Дополнительные материалы</p>
-                            {lesson.meterials.split(';').map((filePath: string) => (
+                            <p className={styles.drawer__materialsTitle}>Дополнительные материалы</p>
+                            {lesson.materials.split(';').map((filePath: string) => (
                                 <div key={`${filePath} ${Math.random()}`} className={styles.drawer__fileWrapper}>
                                     <AttachFileIcon fontSize='small' />
                                     <Button variant='text' onClick={downloadFileHandler(filePath)}>

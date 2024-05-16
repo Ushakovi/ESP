@@ -22,3 +22,20 @@
     white-space: pre-wrap;
     margin-bottom: 20px;
 }
+
+.drawer__fileWrapper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.drawer__lecture,
+.drawer__materials {
+    margin-bottom: 20px;
+}
+
+.drawer__lectureTitle,
+.drawer__materialsTitle {
+    font-weight: 700;
+    margin-bottom: 12px;
+}

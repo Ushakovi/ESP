@@ -47,6 +47,7 @@ export default function Page() {
         }
 
         if (formState?.status === 400) {
+            console.error(formState.statusText);
             setTimeout(() => setAlertShow(null), 2000);
             setAlertShow({
                 alertStatus: 'error',

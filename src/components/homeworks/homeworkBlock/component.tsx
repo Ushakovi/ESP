@@ -13,7 +13,7 @@ export default function Component({ lesson }: { lesson: Lesson }) {
     return (
         <div className={styles.wrapper}>
             <h2 className={styles.title}>Домашняя работа</h2>
-            {userInfo.role === 'Преподователь' && userInfo.id === lesson.creator_id ? (
+            {userInfo.role.toLowerCase() === 'преподователь' && userInfo.id === lesson.creator_id ? (
                 <HomeworkList lesson={lesson} />
             ) : (
                 <HomeworkForm lesson={lesson} />

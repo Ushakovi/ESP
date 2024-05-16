@@ -41,7 +41,7 @@ export default function Component({ discipline }: { discipline: Discipline }) {
         <>
             <div className={styles.lessons}>
                 <h2>Уроки</h2>
-                {userInfo.role === 'Преподователь' && discipline.creator_id === userInfo.id && (
+                {userInfo.role.toLowerCase() === 'преподователь' && discipline.creator_id === userInfo.id && (
                     <Button type='button' variant='contained' onClick={toggleCreateLessonModal}>
                         <AddIcon fontSize='small' />
                         Создать

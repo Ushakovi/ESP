@@ -122,7 +122,7 @@ export default function Component({
                         </div>
                     )}
                     {!homework.estimation_comment &&
-                        userInfo.role === 'Преподователь' &&
+                        userInfo.role.toLowerCase() === 'преподователь' &&
                         homework.lesson_creator_id === userInfo.id && (
                             <div className={styles.drawer__estimationCommentCreateWrapper}>
                                 <p className={styles.drawer__estimationCommentCreateTitle}>Комментарий к оценке:</p>

@@ -45,7 +45,7 @@ export default function Component({ disciplines }: { disciplines: Discipline[] }
                     sx={{ width: '100%', marginBottom: '20px' }}
                     onChange={handleChange}
                 />
-                {userInfo.role === 'Преподователь' && (
+                {userInfo.role.toLowerCase() === 'преподователь' && (
                     <Button type='button' variant='contained' onClick={handleModalOpen}>
                         <AddIcon fontSize='small' />
                         Создать

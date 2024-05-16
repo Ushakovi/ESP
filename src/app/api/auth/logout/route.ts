@@ -2,7 +2,6 @@ import { cookies } from 'next/headers';
 
 export async function GET() {
     const authCookie = cookies().get('token')?.value;
-
     if (!authCookie) {
         return new Response(null, {
             status: 400,

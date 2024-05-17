@@ -5,7 +5,7 @@ import { useFormState } from 'react-dom';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { Alert, TextField, Button, Link as MaterialLink } from '@mui/material';
-import { submitLogin } from '@/utils/server/actions';
+import { submitLogin } from '@/shared/utils/server/actions';
 import styles from './page.module.css';
 
 export default function Page() {

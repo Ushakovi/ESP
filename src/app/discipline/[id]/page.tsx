@@ -5,11 +5,11 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { Breadcrumbs, Button, CircularProgress, Container, Link as MaterialLink } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
-import { UserInfoContext } from '@/utils/client/userInfoProvider';
-import Navbar from '@/components/navbar';
-import LessonsList from '@/components/lessons/lessonsList';
-import DeleteConfirmModal from '@/components/deleteConfirmModal';
-import { Discipline } from '@/types';
+import { UserInfoContext } from '@/shared/utils/client/userInfoProvider';
+import Navbar from '@/shared/ui/navbar';
+import LessonsList from '@/shared/ui/lessons/lessonsList';
+import DeleteConfirmModal from '@/shared/ui/deleteConfirmModal';
+import { Discipline } from '@/shared/types';
 import styles from './page.module.css';
 
 export default function Page({ params }: { params: { id: string } }) {

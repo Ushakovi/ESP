@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 import { verify } from 'jsonwebtoken';
 import { Montserrat } from 'next/font/google';
 import { cookies } from 'next/headers';
-import ThemeProvider from '@/utils/client/themeProvider';
-import { UserInfoProvider } from '@/utils/client/userInfoProvider';
+import ThemeProvider from '@/shared/utils/client/themeProvider';
+import { UserInfoProvider } from '@/shared/utils/client/userInfoProvider';
 import './globals.css';
 
 const montserrat = Montserrat({

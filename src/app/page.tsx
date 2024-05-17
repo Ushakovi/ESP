@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { CircularProgress, Container } from '@mui/material';
-import Navbar from '@/components/navbar';
-import DisciplinesList from '@/components/disciplines/disciplinesList';
-import { Discipline } from '@/types';
+import Navbar from '@/shared/ui/navbar';
+import DisciplinesList from '@/shared/ui/disciplines/disciplinesList';
+import { Discipline } from '@/shared/types';
 import styles from './page.module.css';
 
 export default function Home() {

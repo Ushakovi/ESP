@@ -15,7 +15,7 @@ import {
     Button,
     Link as MaterialLink,
 } from '@mui/material';
-import { submitRegistration } from '@/utils/server/actions';
+import { submitRegistration } from '@/shared/utils/server/actions';
 import styles from './page.module.css';
 
 export default function Page() {

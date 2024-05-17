@@ -7,12 +7,12 @@ import { Breadcrumbs, Button, CircularProgress, Container, Link as MaterialLink 
 import EmailIcon from '@mui/icons-material/Email';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import VideoFileIcon from '@mui/icons-material/VideoFile';
-import { UserInfoContext } from '@/utils/client/userInfoProvider';
-import { downloadFileHandler } from '@/utils/client/downloadFileHandler';
-import Navbar from '@/components/navbar';
-import DeleteConfirmModal from '@/components/deleteConfirmModal';
-import HomeworkBlock from '@/components/homeworks/homeworkBlock';
-import { Lesson } from '@/types';
+import { UserInfoContext } from '@/shared/utils/client/userInfoProvider';
+import { downloadFileHandler } from '@/shared/utils/client/downloadFileHandler';
+import Navbar from '@/shared/ui/navbar';
+import DeleteConfirmModal from '@/shared/ui/deleteConfirmModal';
+import HomeworkBlock from '@/shared/ui/homeworks/homeworkBlock';
+import { Lesson } from '@/shared/types';
 import styles from './page.module.css';
 
 export default function Page({ params }: { params: { id: string } }) {

@@ -9,8 +9,7 @@
         "lint": "eslint ./src --quiet --fix --ext .js,.jsx,.ts,.tsx --config ./.eslintrc.js",
         "precommit": "lint-staged",
         "commitlint": "commitlint --edit -- $1",
-        "prepare": "husky install .husky",
-        "env-pull": "npx vercel env pull .env.development.local"
+        "prepare": "husky install .husky"
     },
     "dependencies": {
         "next": "14.1.0",
@@ -26,11 +25,11 @@
         "@mui/material": "^5.15.15",
         "@types/jsonwebtoken": "^9.0.6",
         "@types/node": "^20",
+        "@types/pg": "^8.11.6",
         "@types/react": "^18",
         "@types/react-dom": "^18",
         "@typescript-eslint/eslint-plugin": "^7.8.0",
         "@typescript-eslint/parser": "^7.8.0",
-        "@vercel/postgres": "^0.7.2",
         "concurrently": "^8.2.2",
         "date-fns": "^3.6.0",
         "eslint": "^8",
@@ -41,6 +40,7 @@
         "jose": "^5.2.4",
         "jsonwebtoken": "^9.0.2",
         "lint-staged": "^15.2.2",
+        "pg": "^8.11.5",
         "prettier": "^3.2.5",
         "typescript": "^5"
     },

@@ -10,12 +10,9 @@ export async function submitLogin(prevState: any, formData: FormData) {
     const password = String(formData.get('password'));
 
     if (email && password) {
-        const { rows: users } =
-            await dbConnect.query(`SELECT us.id, us.email, us.fullname, us.phone, rs.id as role_id, rs.role, (password = crypt(${password}, password)) AS password_match
-            FROM users us
-            join roles rs
-            on role_id = rs.id
-            where email = ${email}`);
+        const { rows: users } = await dbConnect.query(
+            `SELECT us.id, us.email, us.fullname, us.phone, rs.id as role_id, rs.role, (password = crypt('${password}', password)) AS password_match FROM users us join roles rs on role_id = rs.id where email = '${email}'`
+        );
 
         if (users.length > 0 && users[0].password_match) {
             const { id, email, fullname, phone, role_id, role } = users[0];
@@ -62,7 +59,7 @@ export async function submitRegistration(prevState: any, formData: FormData) {
     const password = String(formData.get('password'));
     const role = String(formData.get('role'));
 
-    const { rows: existedUsers } = await dbConnect.query(`SELECT * FROM users where email = ${email}`);
+    const { rows: existedUsers } = await dbConnect.query(`SELECT * FROM users where email = '${email}'`);
 
     if (existedUsers.length > 0) {
         return {
@@ -73,19 +70,16 @@ export async function submitRegistration(prevState: any, formData: FormData) {
 
     if (email && fullname && password && role) {
         try {
-            const { rows: roles } = await dbConnect.query(`SELECT * FROM roles where role = ${role}`);
+            const { rows: roles } = await dbConnect.query(`SELECT * FROM roles where role = '${role}'`);
             if (roles.length > 0) {
                 await dbConnect.query(
-                    `INSERT INTO users (email, fullname, phone, password, role_id) VALUES (${email}, ${fullname}, ${phone}, crypt(${password}, gen_salt('md5')), ${roles[0].id})`
+                    `INSERT INTO users (email, fullname, phone, password, role_id) VALUES ('${email}', '${fullname}', '${phone}', crypt('${password}', gen_salt('md5')), '${roles[0].id}')`
                 );
             }
 
-            const { rows: newUsers } =
-                await dbConnect.query(`SELECT us.id, us.email, us.fullname, us.phone, rs.id as role_id, rs.role, (password = crypt(${password}, password)) AS password_match
-            FROM users us
-            join roles rs
-            on role_id = rs.id
-            where email = ${email}`);
+            const { rows: newUsers } = await dbConnect.query(
+                `SELECT us.id, us.email, us.fullname, us.phone, rs.id as role_id, rs.role, (password = crypt('${password}', password)) AS password_match FROM users us join roles rs on role_id = rs.id where email = '${email}'`
+            );
 
             if (newUsers.length > 0) {
                 const { id, email, fullname, phone, role_id, role } = newUsers[0];
@@ -153,7 +147,7 @@ export async function submitCreateDiscipline(prevState: any, formData: FormData)
     if (name) {
         try {
             await dbConnect.query(
-                `INSERT INTO disciplines (name, description, creator_id) VALUES (${name}, ${description}, ${verification.id})`
+                `INSERT INTO disciplines (name, description, creator_id) VALUES ('${name}', '${description}', '${verification.id}')`
             );
 
             return {
@@ -199,7 +193,7 @@ export async function submitCreateLesson(prevState: any, formData: FormData) {
     if (name) {
         try {
             await dbConnect.query(
-                `INSERT INTO lessons (name, description, materials, lecture, discipline_id, creator_id) VALUES (${name}, ${description}, ${materialsPaths.join(';')}, ${lecturePath}, ${disciplineId}, ${verification.id})`
+                `INSERT INTO lessons (name, description, materials, lecture, discipline_id, creator_id) VALUES ('${name}', '${description}', '${materialsPaths.join(';')}', '${lecturePath}', '${disciplineId}', '${verification.id}')`
             );
 
             return {
@@ -241,7 +235,7 @@ export async function submitCreateHomework(prevState: any, formData: FormData) {
     if (materials) {
         try {
             await dbConnect.query(
-                `INSERT INTO homeworks (comment, materials, estimation_status, estimation_comment, user_id, lesson_id) VALUES (${comment}, ${materialsPaths.join(';')}, false, null, ${verification.id}, ${lessonId})`
+                `INSERT INTO homeworks (comment, materials, estimation_status, estimation_comment, user_id, lesson_id) VALUES ('${comment}', '${materialsPaths.join(';')}', false, null, '${verification.id}', '${lessonId}')`
             );
 
             return {
@@ -279,15 +273,15 @@ export async function submitUpdateHomework(prevState: any, formData: FormData) {
     const materialsPaths = await Promise.all(materialsResults);
 
     try {
-        const { rows: homeworks } = await dbConnect.query(`SELECT * FROM homeworks where id = ${homeworkId}`);
+        const { rows: homeworks } = await dbConnect.query(`SELECT * FROM homeworks where id = '${homeworkId}'`);
         if (homeworks.length > 0) {
             if (comment && comment !== homeworks[0].comment) {
-                await dbConnect.query(`UPDATE homeworks SET comment = ${comment} WHERE id = ${homeworkId}`);
+                await dbConnect.query(`UPDATE homeworks SET comment = '${comment}' WHERE id = '${homeworkId}'`);
             }
 
             if (materialsPaths.join(';') && materialsPaths.join(';') !== homeworks[0].materials) {
                 await dbConnect.query(
-                    `UPDATE homeworks SET materials = ${materialsPaths.join(';')} WHERE id = ${homeworkId}`
+                    `UPDATE homeworks SET materials = '${materialsPaths.join(';')}' WHERE id = '${homeworkId}'`
                 );
             }
 
@@ -326,7 +320,7 @@ export async function submitCreateCommentForHomework(prevState: any, formData: F
     if (comment && homeworkId && verification.id) {
         try {
             await dbConnect.query(
-                `INSERT INTO comments_for_homeworks (comment, homework_id, user_id) VALUES (${comment}, ${homeworkId}, ${verification.id})`
+                `INSERT INTO comments_for_homeworks (comment, homework_id, user_id) VALUES ('${comment}', '${homeworkId}', '${verification.id}')`
             );
 
             return {
@@ -362,7 +356,7 @@ export async function submitCreateEstimationCommentForHomework(prevState: any, f
     if (estimationComment && homeworkId) {
         try {
             await dbConnect.query(
-                `UPDATE homeworks SET estimation_status = true, estimation_comment = ${estimationComment} WHERE id = ${homeworkId}`
+                `UPDATE homeworks SET estimation_status = true, estimation_comment = '${estimationComment}' WHERE id = '${homeworkId}'`
             );
             return {
                 status: 200,

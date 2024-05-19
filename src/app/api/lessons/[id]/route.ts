@@ -14,7 +14,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
     try {
         const { rows: lessons } = await dbConnect.query(
-            `SELECT ls.id, ls.name, ls.description, ls.materials, ls.lecture, ls.discipline_id, ds.name as discipline_name, ls.creator_id, us.fullname as creator_name, us.email as creator_email FROM lessons ls join users us on ls.creator_id = us.id join disciplines ds on ls.discipline_id = ds.id where ls.id = ${params.id}`
+            `SELECT ls.id, ls.name, ls.description, ls.materials, ls.lecture, ls.discipline_id, ds.name as discipline_name, ls.creator_id, us.fullname as creator_name, us.email as creator_email FROM lessons ls join users us on ls.creator_id = us.id join disciplines ds on ls.discipline_id = ds.id where ls.id = '${params.id}'`
         );
 
         return new Response(JSON.stringify({ data: lessons[0] }), {
@@ -41,13 +41,13 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     try {
         const verification: any = verify(authCookie, process.env.JWT_SECRET as string);
         const { rows: disciplines } = await dbConnect.query(
-            `SELECT * FROM lessons WHERE id = ${params.id} and creator_id = ${verification.id}`
+            `SELECT * FROM lessons WHERE id = '${params.id}' and creator_id = '${verification.id}'`
         );
 
         if (disciplines.length > 0) {
-            await dbConnect.query(`DELETE FROM lessons WHERE id = ${params.id}`);
+            await dbConnect.query(`DELETE FROM lessons WHERE id = '${params.id}'`);
             const { rows: disciplinesAfterDelete } = await dbConnect.query(
-                `SELECT * FROM lessons WHERE id = ${params.id}`
+                `SELECT * FROM lessons WHERE id = '${params.id}'`
             );
 
             if (disciplinesAfterDelete.length === 0) {
